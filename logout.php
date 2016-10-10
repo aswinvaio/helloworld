@@ -2,9 +2,10 @@
 /**
  * Created by PhpStorm.
  * User: aswin
- * Date: 10-10-2016
- * Time: 08:18 PM
+ * Date: 11-10-2016
+ * Time: 02:50 AM
  */
+
 require('dbconnect.php');
 ?>
 <html>
@@ -63,82 +64,9 @@ require('dbconnect.php');
     </div><!-- /.navbar-inner -->
 </div><!-- /.navbar -->
 <br/><br/><br/>
-<?php
 
-if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
-{
-   // already logged in
-   header("Location: home.php");
-}
-if(isset($_POST)){
-    //print_r($_POST);
-    if(!empty($_POST['username'])&&!empty($_POST['password'])){
-        $username_in = $_POST['username'];
-        $password_in = $_POST['password'];
-        $sql = "SELECT `UserID`, `EmailAddress` FROM `users` WHERE Username='{$username_in}' AND Password='{$password_in}'";
-        $result = $conn->query($sql);
-        if ($result->num_rows > 0) {
-            //login success
-            $row = $result->fetch_assoc();
-            $_SESSION['UserID'] = $row["UserID"];
-            $_SESSION['EmailAddress'] = $row["EmailAddress"];
-            $_SESSION['Username'] = null;
-            $_SESSION['LoggedIn'] = true;
-        }
-        else{
-            // login fail
 
-        }
-    }
-}
-?>
 
-<?php
-//
-//if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
-//{
-//    echo '1';
-//}
-//else
-//{
-//?>
-<div class="container">
-    <div class="row">
-        <div class="span12">
-            <form class="form-horizontal" action='' method="POST">
-                <fieldset>
-                    <div id="legend">
-                        <legend class="">Login</legend>
-                    </div>
-                    <div class="control-group">
-                        <!-- Username -->
-                        <label class="control-label"  for="username">Username</label>
-                        <div class="controls">
-                            <input type="text" id="username" name="username" placeholder="" class="input-xlarge">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <!-- Password-->
-                        <label class="control-label" for="password">Password</label>
-                        <div class="controls">
-                            <input type="password" id="password" name="password" placeholder="" class="input-xlarge">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <!-- Button -->
-                        <div class="controls">
-                            <button class="btn btn-success" type="submit">Login</button>
-                            <a class="btn btn-success" href="signup.php" >Sign up</a>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
-    </div>
-</div>
-<?php
-//}
-//?>
 
 <script src="http://code.jquery.com/jquery.js"></script>
 </body>
