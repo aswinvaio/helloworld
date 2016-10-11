@@ -29,7 +29,7 @@ require('dbconnect.php');
             <a class="brand" href="#">Project Name</a>
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li class="active"><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
+                    <li><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
                     <li><a href="#">Link</a></li>
                     <li><a href="#">Link</a></li>
                     <li><a href="#">Link</a></li>
@@ -39,23 +39,13 @@ require('dbconnect.php');
                             <li><a href="#">Action</a></li>
                             <li><a href="#">Another action</a></li>
                             <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li class="nav-header">Nav header</li>
-                            <li><a href="#">Separated link</a></li>
-                            <li><a href="#">One more separated link</a></li>
                         </ul>
                     </li>
                 </ul>
                 <ul class="nav pull-right">
                     <li class="dropdown" id="menuLogin">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
-                        <div class="dropdown-menu" style="padding:17px;">
-                            <form class="form" id="formLogin">
-                                <input name="username" id="username" type="text" placeholder="Username">
-                                <input name="password" id="password" type="password" placeholder="Password"><br>
-                                <button type="button" id="btnLogin" class="btn">Login</button>
-                            </form>
-                        </div>
+                    <li><a href="#">Link</a></li>
+
                     </li>
                 </ul>
             </div><!-- /.nav-collapse -->
@@ -82,8 +72,9 @@ if(isset($_POST)){
             $row = $result->fetch_assoc();
             $_SESSION['UserID'] = $row["UserID"];
             $_SESSION['EmailAddress'] = $row["EmailAddress"];
-            $_SESSION['Username'] = null;
+            $_SESSION['Username'] = $row["Username"];
             $_SESSION['LoggedIn'] = true;
+            header("Location: home.php");
         }
         else{
             // login fail
@@ -141,5 +132,6 @@ if(isset($_POST)){
 //?>
 
 <script src="http://code.jquery.com/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

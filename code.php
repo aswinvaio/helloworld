@@ -2,10 +2,9 @@
 /**
  * Created by PhpStorm.
  * User: aswin
- * Date: 10-10-2016
- * Time: 10:50 PM
+ * Date: 11-10-2016
+ * Time: 03:41 PM
  */
-require('dbconnect.php');
 ?>
 <html>
 <head>
@@ -47,7 +46,16 @@ require('dbconnect.php');
                     </li>
                 </ul>
                 <ul class="nav pull-right">
-                        <li><a href="index.php">Logout</a></li>
+                    <li class="dropdown" id="menuLogin">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
+                        <div class="dropdown-menu" style="padding:17px;">
+                            <form class="form" id="formLogin">
+                                <input name="username" id="username" type="text" placeholder="Username">
+                                <input name="password" id="password" type="password" placeholder="Password"><br>
+                                <button type="button" id="btnLogin" class="btn">Login</button>
+                            </form>
+                        </div>
+                    </li>
                 </ul>
             </div><!-- /.nav-collapse -->
         </div><!-- /.container -->
@@ -59,6 +67,5 @@ require('dbconnect.php');
 
 
 <script src="http://code.jquery.com/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
