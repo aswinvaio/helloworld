@@ -7,6 +7,67 @@
  */
 
 require('dbconnect.php');
+$errName = $errPhone = $errEmail = $errUsername = $errPassword = $errConfirm = "";
+$name_in = $email_in = $phone_in = $username_in = $password_in  = $confirm_in = "";
+$canForward = true;
+print_r($_POST);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (empty($_POST["name"])) {
+        $errName = "Name is required";
+        $canForward = false;
+    } else {
+        $name_in = test_input($_POST["name"]);
+    }
+
+    if (empty($_POST["email"])) {
+        $errEmail = "Email is required";
+        $canForward = false;
+    } else {
+        $email_in = test_input($_POST["email"]);
+    }
+
+    if (empty($_POST["phone"])) {
+        $errPhone = "Enter your phone number";
+        $canForward = false;
+    } else {
+        $phone_in = test_input($_POST["phone"]);
+    }
+
+    if (empty($_POST["username"])) {
+        $errUsername = "enter valid username";
+        $canForward = false;
+    } else {
+        $username_in = test_input($_POST["username"]);
+    }
+
+    if (empty($_POST["password"])) {
+        $errPassword = "enter a password";
+        $canForward = false;
+    } else {
+        $password_in = test_input($_POST["password"]);
+    }
+    if (empty($_POST["confirm"])) {
+        $errConfirm = "reenter your password";
+        $canForward = false;
+    } else {
+        if($password_in != $_POST['confirm']) {
+            $errConfirm = "password mismatch!";
+            $canForward = false;
+        } else{
+            $confirm_in = test_input($_POST["confirm"]);
+        }
+    }
+    if($canForward){
+        header("Location: home.php");
+    }
+}
+
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
 ?>
 <html>
 <head>
@@ -16,7 +77,9 @@ require('dbconnect.php');
     <meta name="author" content="aswin">
     <link href="css/bootstrap.min.css" rel="stylesheet" >
     <link href="navbar.css" rel="stylesheet">
-
+    <style>
+        .error {color: #FF0000;}
+    </style>
 </head>
 <body>
 <div class="navbar navbar-fixed-top">
@@ -30,7 +93,7 @@ require('dbconnect.php');
             <a class="brand" href="#">Project Name</a>
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li class="active"><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
+                    <li><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
                     <li><a href="#">Link</a></li>
                     <li><a href="#">Link</a></li>
                     <li><a href="#">Link</a></li>
@@ -40,24 +103,11 @@ require('dbconnect.php');
                             <li><a href="#">Action</a></li>
                             <li><a href="#">Another action</a></li>
                             <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li class="nav-header">Nav header</li>
-                            <li><a href="#">Separated link</a></li>
-                            <li><a href="#">One more separated link</a></li>
                         </ul>
                     </li>
                 </ul>
                 <ul class="nav pull-right">
-                    <li class="dropdown" id="menuLogin">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
-                        <div class="dropdown-menu" style="padding:17px;">
-                            <form class="form" id="formLogin">
-                                <input name="username" id="username" type="text" placeholder="Username">
-                                <input name="password" id="password" type="password" placeholder="Password"><br>
-                                <button type="button" id="btnLogin" class="btn">Login</button>
-                            </form>
-                        </div>
-                    </li>
+                    <li><a class="active" href="index.php"> <i class="icon-home icon-white"></i> Login</a></li>
                 </ul>
             </div><!-- /.nav-collapse -->
         </div><!-- /.container -->
@@ -65,9 +115,79 @@ require('dbconnect.php');
 </div><!-- /.navbar -->
 <br/><br/><br/>
 
-
+<!-- sign up form starts-->
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <form class="form-horizontal" action='' method="POST">
+                <fieldset>
+                    <div id="legend">
+                        <legend class="">Sign up</legend>
+                    </div>
+                    <div class="control-group">
+                        <!-- Name -->
+                        <label class="control-label"  for="name">Name</label>
+                        <div class="controls">
+                            <input type="text" id="name" name="name" placeholder="" class="input-xlarge" value="<?php echo $name_in;?>">
+                            <span class="error"><?php echo $errName;?></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <!-- Email-->
+                        <label class="control-label" for="email" >Email</label>
+                        <div class="controls">
+                            <input type="text" id="email" name="email" placeholder="" class="input-xlarge" value="<?php echo $email_in;?>">
+                            <span class="error"><?php echo $errEmail;?></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <!-- Phone-->
+                        <label class="control-label" for="phone">Phone</label>
+                        <div class="controls">
+                            <input type="text" id="phone" name="phone" placeholder="" class="input-xlarge" value="<?php echo $phone_in;?>">
+                            <span class="error"><?php echo $errPhone;?></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <!-- Username-->
+                        <label class="control-label" for="username">Username</label>
+                        <div class="controls">
+                            <input type="text" id="username" name="username" placeholder="" class="input-xlarge" value="<?php echo $username_in;?>">
+                            <span class="error"><?php echo $errUsername;?></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <!-- Password-->
+                        <label class="control-label" for="password">Password</label>
+                        <div class="controls">
+                            <input type="password" id="password" name="password" placeholder="" class="input-xlarge" value="<?php echo $password_in;?>">
+                            <span class="error"><?php echo $errPassword;?></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <!-- Confirm Password-->
+                        <label class="control-label" for="confirm">Confirm Password</label>
+                        <div class="controls">
+                            <input type="password" id="confirm" name="confirm" placeholder="" class="input-xlarge" value="<?php echo $confirm_in;?>">
+                            <span class="error"><?php echo $errConfirm;?></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <!-- Button -->
+                        <div class="controls">
+                            <button class="btn btn-success" type="submit">Sign up</button>
+                            <a class="btn btn-success" href="index.php" >Already Signed up</a>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
 
 
 <script src="http://code.jquery.com/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 </body>
 </html>

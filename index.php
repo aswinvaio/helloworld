@@ -43,10 +43,8 @@ require('dbconnect.php');
                     </li>
                 </ul>
                 <ul class="nav pull-right">
-                    <li class="dropdown" id="menuLogin">
-                    <li><a href="#">Link</a></li>
+                    <li><a class="active" href="#"> <i class="icon-home icon-white"></i> Login</a></li>
 
-                    </li>
                 </ul>
             </div><!-- /.nav-collapse -->
         </div><!-- /.container -->
