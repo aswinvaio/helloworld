@@ -23,23 +23,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errEmail = "Email is required";
         $canForward = false;
     } else {
-        $email_in = test_input($_POST["email"]);
+        $email_in_temp = test_input($_POST["email"]);
+        if (!filter_var($email_in_temp, FILTER_VALIDATE_EMAIL)) {
+            $errEmail = "Invalid email format";
+            $canForward = false;
+        } else{
+            $email_in = $email_in_temp;
+        }
     }
 
     if (empty($_POST["phone"])) {
         $errPhone = "Enter your phone number";
         $canForward = false;
     } else {
-        $phone_in = test_input($_POST["phone"]);
+        $phone_in_temp = test_input($_POST["phone"]);
+        if (!preg_match('/^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$/',$phone_in_temp)) {
+            $errPhone = "enter valid phone number";
+            $canForward = false;
+        } else{
+            $phone_in = $phone_in_temp;
+        }
     }
 
     if (empty($_POST["username"])) {
         $errUsername = "enter valid username";
         $canForward = false;
     } else {
-        $username_in = test_input($_POST["username"]);
+        $username_in_temp = test_input($_POST["username"]);
+        if (!preg_match('/^[A-Za-z][A-Za-z0-9]{5,31}$/',$username_in_temp)) {
+            $errUsername = "only alphanumeric usernames without white space allowed !";
+            $canForward = false;
+        } else{
+            $username_in = $username_in_temp;
+        }
     }
-
     if (empty($_POST["password"])) {
         $errPassword = "enter a password";
         $canForward = false;
@@ -58,7 +75,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     if($canForward){
+
+
         header("Location: home.php");
+
     }
 }
 
