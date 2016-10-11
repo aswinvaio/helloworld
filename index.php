@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if(!empty($_POST['username'])&&!empty($_POST['password'])){
             $username_in = $_POST['username'];
             $password_in = $_POST['password'];
-            $sql = "SELECT `UserID`, `EmailAddress`, `Name`, `Phone` FROM `users` WHERE Username='{$username_in}' AND Password='{$password_in}'";
+            $sql = "SELECT `UserID`,`Username`, `EmailAddress`, `Name`, `Phone` FROM `users` WHERE Username='{$username_in}' AND Password='{$password_in}'";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {
                 //login success

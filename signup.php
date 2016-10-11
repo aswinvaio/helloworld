@@ -77,7 +77,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if($canForward){
         $sql = "INSERT INTO users( `Username`, `Password`, `EmailAddress`, `Name`, `Phone`) VALUES ('{$username_in}','{$password_in}','{$email_in}','{$name_in}','{$phone_in}')";
         if ($conn->query($sql) === TRUE) {
-            header("Location: home.php");
+            $sql2 = "SELECT `UserID`,`Username`, `EmailAddress`, `Name`, `Phone` FROM `users` WHERE Username='{$username_in}' AND Password='{$password_in}'";
+            $result = $conn->query($sql2);
+            if ($result->num_rows > 0) {
+                //login success
+                $row = $result->fetch_assoc();
+                $_SESSION['UserID'] = $row["UserID"];
+                $_SESSION['EmailAddress'] = $row["EmailAddress"];
+                $_SESSION['Username'] = $row["Username"];
+                $_SESSION['Name'] = $row["Name"];
+                $_SESSION['Phone'] = $row["Phone"];
+                $_SESSION['LoggedIn'] = true;
+                header("Location: home.php");
+            }
         } else {
             // sign up fail
         }

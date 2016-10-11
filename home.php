@@ -7,8 +7,19 @@
  */
 require('dbconnect.php');
 
+$userid = $name = $email = $phone = $username = "";
+if(session_status()===PHP_SESSION_ACTIVE){
+    if(empty($_SESSION)||!($_SESSION['LoggedIn']==true)) {
+        header("Location: index.php");
+    }else{
+        $userid = $_SESSION['UserID'];
+        $name = $_SESSION['Name'];
+        $email = $_SESSION['EmailAddress'];
+        $phone = $_SESSION['Phone'];
+        $username = $_SESSION['Username'];
 
-$name = "aswin";
+    }
+}
 ?>
 <html>
 <head>
@@ -60,7 +71,9 @@ $name = "aswin";
 </div><!-- /.navbar -->
 <br/><br/><br/>
 
-
+<?php
+echo $userid, $name, $phone, $email, $username;
+?>
 
 
 <script src="http://code.jquery.com/jquery.js"></script>

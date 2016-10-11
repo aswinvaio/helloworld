@@ -7,6 +7,7 @@
  */
 
 require('dbconnect.php');
+$_SESSION['LoggedIn'] = false;
 session_destroy();
 header("Location: index.php");
 ?>
