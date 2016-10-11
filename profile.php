@@ -93,7 +93,7 @@ include("includes/header.php");
 <div class="container">
     <form class="form-horizontal" style="width: 100%" method="POST">
         <fieldset>
-            <legend>Sign up</legend>
+            <legend>Edit profile</legend>
 
             <div class="form-group">
                 <label class="col-md-4 control-label" for="name">Name</label>
