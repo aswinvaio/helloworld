@@ -2,15 +2,30 @@
 /**
  * Created by PhpStorm.
  * User: aswin
- * Date: 10-10-2016
- * Time: 10:52 PM
+ * Date: 11-10-2016
+ * Time: 10:12 PM
  */
-
 require('includes/dbconnect.php');
-$errName = $errPhone = $errEmail = $errUsername = $errPassword = $errConfirm = "";
-$name_in = $email_in = $phone_in = $username_in = $password_in  = $confirm_in = "";
+$userid_in = $name_in = $email_in = $phone_in = "";
+$errName = $errPhone = $errEmail  = "";
+if(session_status()===PHP_SESSION_ACTIVE){
+    if(empty($_SESSION)||!($_SESSION['LoggedIn']==true)) {
+        header("Location: index.php");
+    }else{
+        $userid_in = $_SESSION['UserID'];
+        $name_in =  $_SESSION['Name'];
+    }
+}
+$sql = "SELECT `Username`, `EmailAddress`, `Name`, `Phone` FROM `users` WHERE UserID='{$userid_in}'";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $email_in= $row["EmailAddress"];
+    $name_in= $row["Name"];
+    $phone_in= $row["Phone"];
+}
+
 $canForward = true;
-print_r($_POST);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["name"])) {
         $errName = "Name is required";
@@ -44,40 +59,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $phone_in = $phone_in_temp;
         }
     }
-
-    if (empty($_POST["username"])) {
-        $errUsername = "enter valid username";
-        $canForward = false;
-    } else {
-        $username_in_temp = test_input($_POST["username"]);
-        if (!preg_match('/^[A-Za-z][A-Za-z0-9]{5,31}$/',$username_in_temp)) {
-            $errUsername = "only alphanumeric usernames without white space allowed !";
-            $canForward = false;
-        } else{
-            $username_in = $username_in_temp;
-        }
-    }
-    if (empty($_POST["password"])) {
-        $errPassword = "enter a password";
-        $canForward = false;
-    } else {
-        $password_in = test_input($_POST["password"]);
-    }
-    if (empty($_POST["confirm"])) {
-        $errConfirm = "reenter your password";
-        $canForward = false;
-    } else {
-        if($password_in != $_POST['confirm']) {
-            $errConfirm = "password mismatch!";
-            $canForward = false;
-        } else{
-            $confirm_in = test_input($_POST["confirm"]);
-        }
-    }
     if($canForward){
-        $sql = "INSERT INTO users( `Username`, `Password`, `EmailAddress`, `Name`, `Phone`) VALUES ('{$username_in}','{$password_in}','{$email_in}','{$name_in}','{$phone_in}')";
+        $sql = "UPDATE users SET EmailAddress='{$email_in}', Name='{$name_in}', Phone='{$phone_in}' WHERE UserID={$userid_in}";
         if ($conn->query($sql) === TRUE) {
-            $sql2 = "SELECT `UserID`,`Username`, `EmailAddress`, `Name`, `Phone` FROM `users` WHERE Username='{$username_in}' AND Password='{$password_in}'";
+            $sql2 = "SELECT `UserID`,`Username`, `EmailAddress`, `Name`, `Phone` FROM `users` WHERE UserID={$userid_in}";
             $result = $conn->query($sql2);
             if ($result->num_rows > 0) {
                 //login success
@@ -91,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: home.php");
             }
         } else {
-            // sign up fail
+            // update fail
         }
     }
 }
@@ -131,37 +116,12 @@ include("includes/header.php");
                     <span class="error"><?php echo $errPhone;?></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="username">Username</label>
-                <div class="col-md-4">
-                    <input id="username" name="username" type="text" placeholder="" class="form-control input-md" value="<?php echo $username_in;?>">
-                    <span class="error"><?php echo $errUsername;?></span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="password">Password</label>
-                <div class="col-md-4">
-                    <input id="password" name="password" type="password" placeholder="" class="form-control input-md" value="<?php echo $password_in;?>">
-                    <span class="error"><?php echo $errPassword;?></span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="confirm">Confirm Password</label>
-                <div class="col-md-4">
-                    <input id="confirm" name="confirm" type="password" placeholder="" class="form-control input-md" value="<?php echo $confirm_in;?>">
-                    <span class="error"><?php echo $errConfirm;?></span>
-                </div>
-            </div>
-
-
 
             <div class="form-group">
                 <label class="col-md-4 control-label" for="login"></label>
                 <div class="col-md-8">
-                    <button id="signup" name="signup" class="btn btn-success">Sign up</button>
-                    <a class="btn btn-primary" href="index.php" >Already Signed up</a>
+                    <button id="signup" name="signup" class="btn btn-success">Save</button>
+                    <a class="btn btn-primary" href="home.php" >Cancel</a>
                 </div>
             </div>
 
@@ -169,6 +129,6 @@ include("includes/header.php");
     </form>
 </div>
 
-<?php
-include("includes/footer.php");
-?>
+
+
+<?php include("includes/footer.php"); ?>
