@@ -7,6 +7,8 @@
  */
 
 require('dbconnect.php');
+session_destroy();
+header("Location: index.php");
 ?>
 <html>
 <head>
@@ -65,9 +67,7 @@ require('dbconnect.php');
 </div><!-- /.navbar -->
 <br/><br/><br/>
 
-
-
-
+loged out
 <script src="http://code.jquery.com/jquery.js"></script>
 </body>
 </html>

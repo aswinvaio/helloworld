@@ -75,10 +75,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     if($canForward){
-
-
-        header("Location: home.php");
-
+        $sql = "INSERT INTO users( `Username`, `Password`, `EmailAddress`, `Name`, `Phone`) VALUES ('{$username_in}','{$password_in}','{$email_in}','{$name_in}','{$phone_in}')";
+        if ($conn->query($sql) === TRUE) {
+            header("Location: home.php");
+        } else {
+            // sign up fail
+        }
     }
 }
 
