@@ -7,6 +7,19 @@
  */
 $name="";
 $loginlogout = "Login";
+$loginlogout_nav = "index.php";
+$showProfile = false;
+$activetab = "";
+if(session_status()===PHP_SESSION_ACTIVE){
+    if(!empty($_SESSION)) {
+        if ($_SESSION['LoggedIn'] == true) {
+            $showProfile = true;
+            $name = $_SESSION['Name'];
+            $loginlogout = "Logout";
+            $loginlogout_nav = 'logout.php';
+        }
+    }
+}
 ?>
 <html>
 <head>
@@ -32,30 +45,34 @@ $loginlogout = "Login";
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Project name</a>
+            <a class="navbar-brand" href="home.php">Project name</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li class="dropdown">
+                <li class="active"><a href="home.php">Home</a></li>
+                <li><a href="info.php#about">About</a></li>
+                <li><a href="info.php#contact">Contact</a></li>
+                <!--<li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Action</a></li>
                         <li><a href="#">Another action</a></li>
                         <li><a href="#">Something else here</a></li>
                     </ul>
-                </li>
+                </li>-->
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown" id="menuLogin">
-                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin"><?php echo $name;?></a>
+                <?php
+                if($showProfile){
+                    echo('<li class="dropdown" id="menuLogin">
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">'.$name.'</a>
                 <div class="dropdown-menu" style="padding:17px;">
                     <a href="profile.php">Edit Profile</a>
                 </div>
-                </li>
-                <li><a href="logout.php"><?php echo $loginlogout;?></a></li>
+                </li>');
+                }
+                ?>
+                <li><a href="<?php echo $loginlogout_nav;?>"><?php echo $loginlogout;?></a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>

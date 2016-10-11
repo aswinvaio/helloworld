@@ -10,7 +10,6 @@ require('includes/dbconnect.php');
 $errName = $errPhone = $errEmail = $errUsername = $errPassword = $errConfirm = "";
 $name_in = $email_in = $phone_in = $username_in = $password_in  = $confirm_in = "";
 $canForward = true;
-print_r($_POST);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["name"])) {
         $errName = "Name is required";
