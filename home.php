@@ -40,13 +40,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($conn->query($sqlinsert) === TRUE) {
             $message = 'success';
         } else {
-            $message = 'failed';        }
+            $message = 'failed';
+        }
+
     }
 }
 
 function test_input($data) {
     $data = trim($data);
-    $data = stripslashes($data);
+    $data = addslashes($data);
     $data = htmlspecialchars($data);
     return $data;
 }
@@ -67,7 +69,7 @@ include("includes/header.php");
                 </div>
                 <div class="form-group">
                     <button id="submit" name="submit" class="btn btn-success">Post</button>
-                    <a class="btn btn-primary" href="#" >Cancel</a>
+                    <a class="btn btn-primary" href="home.php" >Cancel</a>
                 </div>
             </form>
             <?php
@@ -76,7 +78,7 @@ include("includes/header.php");
             } elseif($message=='failed'){
                 echo('<div class="alert alert-danger"> <strong>Failed!</strong> Your post failed to submit.</div>');
             }
-
+            $message = "";
             ?>
         </div>
         <br/>
@@ -86,7 +88,7 @@ include("includes/header.php");
         <?php
         $posts = "";
 
-        $sqlread = "SELECT `PostID`, `UserID`, `Time`, `Title`, `Content` FROM `posts` WHERE UserID=".$userid.";";
+        $sqlread = "SELECT `PostID`, `UserID`, `Time`, `Title`, `Content` FROM `posts` WHERE UserID=".$userid." ORDER BY PostID DESC;";
         $result = $conn->query($sqlread);
         if ($result->num_rows > 0) {
             //has posts
